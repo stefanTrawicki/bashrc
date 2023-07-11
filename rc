@@ -16,7 +16,10 @@ fi
 # Theme
 if PROFILE_SHELL=zsh; then
     autoload -U colors && colors
-    PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+    autoload -Uz vcs_info
+    precmd() {vcs_info}
+    zstyle ':vcs_info:git:*' formats '(%b)'
+    PS1="${vcs_info_msg_0_} %{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
 elif PROFILE_SHELL=bash; then
     PS1='(\[\e[1m\]$(git branch 2>/dev/null | grep '"'"' ^* '"'"' | colrm 1 2)\[\e[0m\]) \[\e[91m\]\u\[\e[0m\]@\[\e[38;5;40m\]\H \[\e[38;5;214m\]\w \[\e[0m\]% '
 fi
