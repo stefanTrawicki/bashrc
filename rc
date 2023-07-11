@@ -1,0 +1,51 @@
+# https://unix.stackexchange.com/questions/71121/determine-shell-in-script-during-runtime
+if test -n "$ZSH_VERSION"; then
+  PROFILE_SHELL=zsh
+elif test -n "$BASH_VERSION"; then
+  PROFILE_SHELL=bash
+elif test -n "$KSH_VERSION"; then
+  PROFILE_SHELL=ksh
+elif test -n "$FCEDIT"; then
+  PROFILE_SHELL=ksh
+elif test -n "$PS3"; then
+  PROFILE_SHELL=unknown
+else
+  PROFILE_SHELL=sh
+fi
+
+# Theme
+if PROFILE_SHELL=zsh; then
+    autoload -U colors && colors
+    PS1="%{$fg[red]%}%n%{$reset_color%}@%{$fg[green]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
+elif PROFILE_SHELL=bash; then
+    PS1='(\[\e[1m\]$(git branch 2>/dev/null | grep '"'"' ^* '"'"' | colrm 1 2)\[\e[0m\]) \[\e[91m\]\u\[\e[0m\]@\[\e[38;5;40m\]\H \[\e[38;5;214m\]\w \[\e[0m\]% '
+fi
+
+# Aliases
+alias ls='ls --color=auto'
+alias l='ls -lah'
+alias ebrc='vim ~/.bashrc && source ~/.bashrc'
+alias lg='l | grep'
+alias f='find . -name'
+alias ldl="ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012"
+alias t="tmux"
+alias ta="tmux attach -t"
+alias tl="tmux ls"
+alias setvenv="source ./venv/bin/activate"
+alias edit="vim"
+alias p="pgrep"
+
+# Other settings
+export HISTFILESIZE=10000
+export HISTSIZE=500
+export EDITOR=vim
+export VISUAL=vim
+
+# Color for manpages in less makes manpages a little easier to read
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
